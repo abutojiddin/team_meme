@@ -10,6 +10,7 @@ app.use(express.json())
 app.get('/test', (req, res) => {
     res.json({ message: "ishlavotdi" })
 })
+console.log("hi");
 
 const PORT = process.env.port
 app.listen(PORT, () => {
