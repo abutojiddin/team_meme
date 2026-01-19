@@ -5,7 +5,7 @@ const getClient = express.Router();
 getClient.get(`/`, async (req, res) => {
   const result = await pool.query("select * from client");
   console.log(result.rows);
-  res.json(201).json({ client: result.rows });
+  res.status(200).json({ clients: result.rows });
 });
 
 export default getClient;
