@@ -3,6 +3,7 @@ import cors from "cors"
 import 'dotenv/config'
 import clientRouter from "./routes/clientRouter.js"
 import categoryRouter from "./routes/categoryRouter.js"
+import clientProductRoutes from "./routes/clientProductRoutes.js"
 import { getProducts } from "./controllers/productsControllers.js"
 import productRouter from "./routes/productsRouter.js"
 
@@ -15,9 +16,9 @@ app.use('/client', clientRouter)
 
 app.use('/category', categoryRouter)
 
-app.use('/products', productRouter)
+app.use("/client_products", clientProductRoutes);
 
-app.use('/clientProduct', clientRouter)
+app.use('/products', productRouter)
 
 const PORT = process.env.port
 

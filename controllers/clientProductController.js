@@ -13,16 +13,12 @@ export const getClientProducts = async (req, res) => {
 }
 
 export const postClientProduct = async (req, res) => {
-    const { client_id, product_name, price, amount, category } = req.body;
+    const { cliend_id, product_id } = req.body;
 
     try {
         const result = await pool.query(
-            `
-                INSERT INTO client_products (client_id, product_name, price, amount, category) 
-                VALUES ($1, $2, $3, $4, $5)
-                RETURNING *
-            `,
-            [client_id, product_name, price, amount, category]
+            `INSERT INTO client_products (cliend_id, product_id) VALUES ($1, $2) RETURNING *`,
+            [cliend_id, product_id]
         );
 
         res.status(201).json({ 
@@ -34,41 +30,14 @@ export const postClientProduct = async (req, res) => {
     }
 }
 
-export const deleteClientProduct = async (req, res) => {
-    const id = +req.params.id;
-
-    try {
-        const result = await pool.query(
-            `
-                DELETE FROM client_products
-                WHERE id = $1
-                RETURNING *
-            `,
-            [id]
-        );
-
-        res.json({ 
-            message: !result.rows[0] ? `${id} id lik mahsulot topilmadi` : "Mahsulot o'chirildi", 
-            deletedProduct: result.rows[0] 
-        });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-
 export const putClientProduct = async (req, res) => {
     const id = req.params.id;
-    const { client_id, product_name, price, amount, category } = req.body;
+    const { cliend_id, product_id } = req.body;
 
     try {
         const result = await pool.query(
-            `
-                UPDATE client_products 
-                SET client_id = $1, product_name = $2, price = $3, amount = $4, category = $5
-                WHERE id = $6
-                RETURNING *
-            `,
-            [client_id, product_name, price, amount, category, id]
+            `UPDATE client_products SET cliend_id = $1, product_id = $2 WHERE id = $3 RETURNING *`,
+            [cliend_id, product_id, id]
         );
 
         if (result.rows.length === 0) {
@@ -78,6 +47,24 @@ export const putClientProduct = async (req, res) => {
         res.status(200).json({ 
             message: "Mahsulot ma'lumotlari o'zgartirildi", 
             updatedProduct: result.rows[0] 
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export const deleteClientProduct = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const result = await pool.query(
+            `DELETE FROM client_products WHERE id = $1 RETURNING *`,
+            [id]
+        );
+
+        res.json({ 
+            message: !result.rows[0] ? `${id} id lik mahsulot topilmadi` : "Mahsulot o'chirildi", 
+            deletedProduct: result.rows[0] 
         });
     } catch (error) {
         res.status(500).json({ message: error.message });

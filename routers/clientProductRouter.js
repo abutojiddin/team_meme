@@ -1,24 +1,24 @@
 import express from "express";
+import pool from "../config/connection.js";
 
-import { 
-    getClientProducts, 
-    postClientProduct, 
-    putClientProduct, 
-    deleteClientProduct 
-} from "../controllers/client_products.controller.js";
+const getClientProducts = express.Router();
 
-const clientProductRouter = express.Router();
+getClientProducts.get("/", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM client_products");
 
-// Barcha mahsulotlarni olish
-clientProductRouter.get("/", getClientProducts);
+        console.log(result.rows);
+        res.status(200).json({
+            success: true,
+            client_products: result.rows,
+        });
+    } catch (error) {
+        console.error("Xatolik yuz berdi:", error.message);
+        res.status(500).json({
+            success: false,
+            message: "Serverda xatolik yuz berdi",
+        });
+    }
+});
 
-// Yangi mahsulot qo'shish
-clientProductRouter.post("/", postClientProduct);
-
-// Mahsulotni ID bo'yicha yangilash
-clientProductRouter.put("/:id", putClientProduct);
-
-// Mahsulotni ID bo'yicha o'chirish
-clientProductRouter.delete("/:id", deleteClientProduct);
-
-export default clientProductRouter;
+export default getClientProducts;
