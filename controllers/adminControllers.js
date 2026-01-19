@@ -44,3 +44,24 @@ export const deleteAdmin = async (req, res) => {
 
     res.json({ message: !result.rows[0] ? `${id} id lik client mavjud emas` : 'O\'chirildi', deletedCategory: result.rows[0] })
 }
+
+export const putAdmin = async (req, res) => {
+    const id = req.params.id
+    const { username, email, phone_number, pasword, profile_img } = req.body
+
+    try {
+        const result = await pool.query(
+            `
+                UPDATE admin 
+                SET ( username, email, phone_number, pasword, profile_img ) = ( $1, $2, $3, $4, $5 )
+                WHERE id = $6
+                RETURNING *
+            `,
+            [ username, email, phone_number, pasword, profile_img, id ]
+        )
+
+        res.status(200).json({ message: "O'zgartirildi", updatedClient: result.rows[0] })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
