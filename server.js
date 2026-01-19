@@ -13,7 +13,10 @@ app.use('/client', clientRouter)
 
 app.use('/category', categoryRouter)
 
+app.use('/clientProduct', clientRouter)
+
 const PORT = process.env.port
+
 app.listen(PORT, () => {
     console.log(`Girgittonimiz xizmatingizga muntazir: http://localhost:${PORT}`);
 })
