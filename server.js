@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import 'dotenv/config'
 import clientRouter from "./routes/clientRouter.js"
+import categoryRouter from "./routes/categoryRouter.js"
 
 const app = express()
 
@@ -9,6 +10,8 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/client', clientRouter)
+
+app.use('/category', categoryRouter)
 
 const PORT = process.env.port
 app.listen(PORT, () => {
