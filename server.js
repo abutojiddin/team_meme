@@ -3,8 +3,8 @@ import cors from "cors"
 import 'dotenv/config'
 import clientRouter from "./routes/clientRouter.js"
 import categoryRouter from "./routes/categoryRouter.js"
-import { getProducts } from "./controllers/productsControllers.js"
 import productRouter from "./routes/productsRouter.js"
+import adminRouter from "./routes/adminRouter.js"
 
 const app = express()
 
@@ -16,8 +16,7 @@ app.use('/client', clientRouter)
 app.use('/category', categoryRouter)
 
 app.use('/products', productRouter)
-
-app.use('/clientProduct', clientRouter)
+app.use('/admin', adminRouter)
 
 const PORT = process.env.port
 
