@@ -14,7 +14,7 @@ app.use('/client', clientRouter)
 
 app.use('/category', categoryRouter)
 
-app.use('/clientProduct', clientProductRoutes)
+app.use("/client_products", clientProductRoutes);
 
 const PORT = process.env.port
 
