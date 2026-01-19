@@ -13,16 +13,16 @@ export const getClientProducts = async (req, res) => {
 }
 
 export const postClientProduct = async (req, res) => {
-    const { client_id, product_name, price, amount, category } = req.body;
+    const { cliend_id, product_id } = req.body;
 
     try {
         const result = await pool.query(
             `
-                INSERT INTO client_products (client_id, product_name, price, amount, category) 
-                VALUES ($1, $2, $3, $4, $5)
+                INSERT INTO client_products (cliend_id, product_id) 
+                VALUES ($1, $2)
                 RETURNING *
             `,
-            [client_id, product_name, price, amount, category]
+            [cliend_id, product_id]
         );
 
         res.status(201).json({ 
@@ -58,17 +58,17 @@ export const deleteClientProduct = async (req, res) => {
 
 export const putClientProduct = async (req, res) => {
     const id = req.params.id;
-    const { client_id, product_name, price, amount, category } = req.body;
+    const { client_id, product_id } = req.body;
 
     try {
         const result = await pool.query(
             `
                 UPDATE client_products 
-                SET client_id = $1, product_name = $2, price = $3, amount = $4, category = $5
-                WHERE id = $6
+                SET client_id = $1, product_id = $2
+                WHERE id = $3
                 RETURNING *
             `,
-            [client_id, product_name, price, amount, category, id]
+            [client_id, product_id]
         );
 
         if (result.rows.length === 0) {

@@ -1,24 +1,20 @@
 import express from "express";
-import pool from "../config/connection.js";
 
-const getClientProducts = express.Router();
+import { 
+    getClientProducts, 
+    postClientProduct, 
+    putClientProduct, 
+    deleteClientProduct 
+} from "../controllers/clientControllers.js";
 
-getClientProducts.get("/", async (req, res) => {
-    try {
-        const result = await pool.query("SELECT * FROM client_products");
+const clientProductRouter = express.Router();
 
-        console.log(result.rows);
-        res.status(200).json({
-            success: true,
-            client_products: result.rows,
-        });
-    } catch (error) {
-        console.error("Xatolik yuz berdi:", error.message);
-        res.status(500).json({
-            success: false,
-            message: "Serverda xatolik yuz berdi",
-        });
-    }
-});
+clientProductRouter.get("/", getClientProducts);
 
-export default getClientProducts;
+clientProductRouter.post("/", postClientProduct);
+
+clientProductRouter.put("/:id", putClientProduct);
+
+clientProductRouter.delete("/:id", deleteClientProduct);
+
+export default clientProductRouter;
